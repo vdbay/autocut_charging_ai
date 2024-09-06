@@ -10,7 +10,6 @@ show_toast_and_notification() {
     sed -Ei "s/^description=(\[.*][[:space:]]*)?/description=[ Module active: $1 ] /g" "$MODPATH/module.prop" || {
         log_message "Failed to update module.prop"
     }
-    am start -a android.intent.action.MAIN -e toasttext "🌱 Sakura will grow." -n bellavita.toast/.MainActivity
     am start -a android.intent.action.MAIN -e toasttext "Module active: $1" -n bellavita.toast/.MainActivity || {
         log_message "Failed to send toast notification"
     }
@@ -31,6 +30,7 @@ charging_mode() {
 }
 
 main_activity_module() {
+    PREV_CHARGING_MODE=" "
     while true; do
         CHARGE_STATUS=$(cat /sys/class/power_supply/battery/status) || {
             log_message "Failed to read charge status"
@@ -46,13 +46,20 @@ main_activity_module() {
         }
 
         if [ "$CHARGE_STATUS" != "Charging" ]; then
-            show_toast_and_notification "Device is not charging."
+            if [ "$PREV_CHARGING_MODE" != "X" ]; then
+                show_toast_and_notification "Device is not charging."
+            fi
+
             sleep 90
         else
             if [ "$SCREEN_STATE" = "ON_UNLOCKED" ] && [ "$IS_POWER_SAVE" != "true" ]; then
-                charging_mode 30 80
+                if [ "$PREV_CHARGING_MODE" != "A" ]; then
+                    charging_mode 30 80
+                fi
             else
-                charging_mode 60 90
+                if [ "$PREV_CHARGING_MODE" != "B" ]; then
+                    charging_mode 60 90
+                fi
             fi
             sleep 60
         fi
@@ -60,4 +67,5 @@ main_activity_module() {
 }
 
 log_message "executed"
+su -lp 2000 -c "cmd notification post -S bigtext -t 'Autocut Charging AI' tag 'Module active: Starting...'" >/dev/null 2>&1
 main_activity_module &
