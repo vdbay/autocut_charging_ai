@@ -31,32 +31,28 @@ vmode() {
     fi
 }
 
-main_activity_module() {
-    vshow_info "On"
-    VIS_ENABLED_PREV=-1 #first time "-1"
-    while true; do
-        VIS_SCREEN_OFF=$(dumpsys window | grep "mScreenOn" | grep false)
-        VIS_ENABLED=$(cat $VCONFINT) #"0", "1"
-
-        if [ "$VIS_ENABLED" = "1" ]; then
-            if [ -z "$VIS_SCREEN_OFF" ]; then
-                vmode 30 80
-            else
-                vmode 70 99
-            fi
-            if [ "$VIS_ENABLED" != "$VIS_ENABLED_PREV" ]; then
-                VIS_ENABLED_PREV=$VIS_ENABLED
-                vshow_info "On"
-            fi
-        else
-            if [ "$VIS_ENABLED" != "$VIS_ENABLED_PREV" ]; then
-                VIS_ENABLED_PREV=$VIS_ENABLED
-                vshow_info "Off"
-            fi
-        fi
-        sleep 60
-    done
-}
-
 vshow_info "Turning On..."
-nohup main_activity_module &
+vshow_info "On"
+VIS_ENABLED_PREV=-1 #first time "-1"
+while true; do
+    VIS_SCREEN_OFF=$(dumpsys window | grep "mScreenOn" | grep false)
+    VIS_ENABLED=$(cat $VCONFINT) #"0", "1"
+
+    if [ "$VIS_ENABLED" = "1" ]; then
+        if [[ "$VIS_SCREEN_OFF" ]]; then
+            vmode 70 99
+        else
+            vmode 30 80
+        fi
+        if [ "$VIS_ENABLED" != "$VIS_ENABLED_PREV" ]; then
+            VIS_ENABLED_PREV=$VIS_ENABLED
+            vshow_info "On"
+        fi
+    else
+        if [ "$VIS_ENABLED" != "$VIS_ENABLED_PREV" ]; then
+            VIS_ENABLED_PREV=$VIS_ENABLED
+            vshow_info "Off"
+        fi
+    fi
+    sleep 60
+done &
