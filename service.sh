@@ -35,12 +35,12 @@ main_activity_module() {
     vshow_info "On"
     VIS_ENABLED_PREV=-1 #first time "-1"
     while true; do
-        VSCREEN_STATE=$(dumpsys nfc | grep 'mScreenState' | cut -d'=' -f2)               #"ON_UNLOCKED"
+        VSCREEN_STATE=$(dumpsys nfc | grep 'mScreenState' | cut -d'=' -f2)               #"OFF"
         VIS_POWER_SAVE=$(dumpsys nfc | grep 'mIsPowerSavingModeEnabled' | cut -d'=' -f2) #"true", "false"
         VIS_ENABLED=$(cat $VCONFINT)                                                     #"0", "1"
 
         if [ "$VIS_ENABLED" = "1" ]; then
-            if [ "$VSCREEN_STATE" = "ON_UNLOCKED" ] && [ "$VIS_POWER_SAVE" != "true" ]; then
+            if [ "$VSCREEN_STATE" != "OFF" ] && [ "$VIS_POWER_SAVE" != "true" ]; then
                 vmode 30 80
             else
                 vmode 80 99
