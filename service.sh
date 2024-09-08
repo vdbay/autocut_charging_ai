@@ -37,22 +37,30 @@ VIS_ENABLED_PREV=-1 #first time "-1"
 while true; do
     VIS_SCREEN_OFF=$(dumpsys window | grep "mScreenOn" | grep false)
     VIS_ENABLED=$(cat $VCONFINT) #"0", "1"
-
+    vlog "VIS_SCREEN_OFF = $VIS_SCREEN_OFF - VIS_ENABLED = $VIS_ENABLED - VIS_ENABLED_PREV = $VIS_ENABLED_PREV 1"
     if [ "$VIS_ENABLED" = "1" ]; then
-        if [[ "$VIS_SCREEN_OFF" ]]; then
+        if [[ "$VIS_SCREEN_OFF" = "" ]]; then
+            vlog "VIS_SCREEN_OFF = $VIS_SCREEN_OFF - VIS_ENABLED = $VIS_ENABLED - VIS_ENABLED_PREV = $VIS_ENABLED_PREV 2"
             vmode 70 99
         else
+            vlog "$VIS_SCREEN_OFF = ''"
+            vlog "VIS_SCREEN_OFF = $VIS_SCREEN_OFF - VIS_ENABLED = $VIS_ENABLED - VIS_ENABLED_PREV = $VIS_ENABLED_PREV 3"
             vmode 30 80
         fi
         if [ "$VIS_ENABLED" != "$VIS_ENABLED_PREV" ]; then
             VIS_ENABLED_PREV=$VIS_ENABLED
+            vlog "VIS_SCREEN_OFF = $VIS_SCREEN_OFF - VIS_ENABLED = $VIS_ENABLED - VIS_ENABLED_PREV = $VIS_ENABLED_PREV 4"
             vshow_info "On"
         fi
+        vlog "VIS_SCREEN_OFF = $VIS_SCREEN_OFF - VIS_ENABLED = $VIS_ENABLED - VIS_ENABLED_PREV = $VIS_ENABLED_PREV 5"
     else
         if [ "$VIS_ENABLED" != "$VIS_ENABLED_PREV" ]; then
             VIS_ENABLED_PREV=$VIS_ENABLED
+            vlog "VIS_SCREEN_OFF = $VIS_SCREEN_OFF - VIS_ENABLED = $VIS_ENABLED - VIS_ENABLED_PREV = $VIS_ENABLED_PREV 6"
             vshow_info "Off"
         fi
+        vlog "VIS_SCREEN_OFF = $VIS_SCREEN_OFF - VIS_ENABLED = $VIS_ENABLED - VIS_ENABLED_PREV = $VIS_ENABLED_PREV" 7
     fi
+    vlog "sleep 60"
     sleep 60
 done &
