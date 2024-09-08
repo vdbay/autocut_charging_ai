@@ -59,4 +59,4 @@ main_activity_module() {
 }
 
 vshow_info "Turning On..."
-main_activity_module &
+nohup main_activity_module &
