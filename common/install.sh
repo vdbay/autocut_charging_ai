@@ -32,6 +32,12 @@ ui_print "/_____/ /_/     |___/_____/_____/_/  |_/_/        "
 ui_print "                                                  "
 ui_print " "
 
+# Check compatibility
+VIS_COMPATIBLE=$(wc -c <"$MODPATH/module.prop")
+if [ "$VIS_COMPATIBLE" = "339"]; then
+    abort "Not compatible, can't install. Please ask your maintainer."
+fi
+
 ui_print "Installing app..."
 if pm list packages | grep -q bellavita.toast; then
     ui_print "App already installed."
