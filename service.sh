@@ -8,7 +8,7 @@ VCONFMOD=$MODPATH/autocut.conf
 VCONFINT=$VMODPATH/autocut.conf
 
 vlog() {
-    echo "$(date) - $1" >$VLOGMOD
+    echo "$(date) - $1" >$VLOGINT
 }
 
 vshow_info() {
