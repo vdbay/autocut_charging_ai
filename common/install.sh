@@ -57,7 +57,6 @@ if [ ! -e "$VMODPATH" ]; then
     fi
     if [ ! -e "$VCONFINT" ]; then
         cp -f "$VCONFMOD" "$VCONFINT"
-        echo "$(date) - Installed" >>$VCONFINT
     fi
 fi
 ui_print "Thanks to:"
