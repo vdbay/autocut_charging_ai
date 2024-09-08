@@ -39,7 +39,7 @@ while true; do
     VIS_ENABLED=$(cat $VCONFINT) #"0", "1"
     vlog "VIS_SCREEN_OFF = $VIS_SCREEN_OFF - VIS_ENABLED = $VIS_ENABLED - VIS_ENABLED_PREV = $VIS_ENABLED_PREV 1"
     if [ "$VIS_ENABLED" = "1" ]; then
-        if [[ "$VIS_SCREEN_OFF" = "" ]]; then
+        if [[ "$VIS_SCREEN_OFF" ]]; then
             vlog "VIS_SCREEN_OFF = $VIS_SCREEN_OFF - VIS_ENABLED = $VIS_ENABLED - VIS_ENABLED_PREV = $VIS_ENABLED_PREV 2"
             vmode 70 99
         else
