@@ -1,7 +1,7 @@
 id=VDBayAIAutocutCharging
 name=VDBay AI Autocut Charging
-version=v1.0
-versionCode=1
+version=v1.0.0
+versionCode=100
 author=VDBay
 description= Optimize your device’s battery life with VDBay AI Autocut Charging — Smart, automatic charging adjustments for peak performance and longevity.
 updateJson=https://github.com/vdbay/autocut_charging_ai/raw/master/update.json
