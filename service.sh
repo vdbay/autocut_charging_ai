@@ -23,13 +23,13 @@ vset_charging() {
 }
 
 while true; do
-    vIsScreenOff=$(dumpsys window | grep -q "mScreenOn=false" && echo 1 || echo 0)
-    vIsEnabled=$(cat "$vConfFile")                                # Read "0" or "1"
-    vBatteryLevel=$(cat /sys/class/power_supply/battery/capacity) # "0-100"
-    vChargeStatus=$(cat /sys/class/power_supply/battery/status)   # "Charging" or "Discharging"
+    vIsScreenOff=$(dumpsys window | grep "mScreenOn" | grep false) # empty = screen on
+    vIsEnabled=$(cat "$vConfFile")                                 # Read "0" or "1"
+    vBatteryLevel=$(cat /sys/class/power_supply/battery/capacity)  # "0-100"
+    vChargeStatus=$(cat /sys/class/power_supply/battery/status)    # "Charging" or "Discharging"
 
     if [ "$vIsEnabled" = "1" ]; then
-        if [ "$vIsScreenOff" = "1" ]; then
+        if [ "$vIsScreenOff" ]; then
             # Screen is off: Charge at 70%, stop at 100%
             [ "$vBatteryLevel" -ge 100 ] && [ "$vChargeStatus" = "Charging" ] && vset_charging 0
             [ "$vBatteryLevel" -le 70 ] && [ "$vChargeStatus" = "Discharging" ] && vset_charging 1
