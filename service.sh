@@ -10,7 +10,7 @@ vlog() {
 }
 
 vnotify() {
-    vStatus="Module status: $1"
+    local vStatus="Module status: $1"
     sed -Ei "s/^description=(\[.*][[:space:]]*)?/description=[ $vStatus ] /g" "$MODPATH/module.prop"
     am start -a android.intent.action.MAIN -e toasttext "$vStatus" -n bellavita.toast/.MainActivity
     su -lp 2000 -c "cmd notification post -S bigtext -t 'Autocut Charging AI by VDBay' tag '$vStatus'" >/dev/null 2>&1
@@ -30,13 +30,19 @@ while true; do
 
     if [ "$vIsEnabled" = "1" ]; then
         if [ "$vIsScreenOff" ]; then
-            # Screen is off: Charge at 70%, stop at 100%
-            [ "$vBatteryLevel" -ge 100 ] && [ "$vChargeStatus" = "Charging" ] && vset_charging 0
-            [ "$vBatteryLevel" -le 70 ] && [ "$vChargeStatus" = "Discharging" ] && vset_charging 1
+            # Layar mati: Charge jika <70%, stop jika >=100%
+            if [ "$vBatteryLevel" -lt 100 ] && [ "$vBatteryLevel" -ge 70 ] && [ "$vChargeStatus" = "Discharging" ]; then
+                vset_charging 1
+            elif [ "$vBatteryLevel" -ge 100 ] && [ "$vChargeStatus" = "Charging" ]; then
+                vset_charging 0
+            fi
         else
-            # Screen is on: Charge at 30%, stop at 80%
-            [ "$vBatteryLevel" -ge 80 ] && [ "$vChargeStatus" = "Charging" ] && vset_charging 0
-            [ "$vBatteryLevel" -le 30 ] && [ "$vChargeStatus" = "Discharging" ] && vset_charging 1
+            # Layar menyala: Charge jika <30%, stop jika >=80%
+            if [ "$vBatteryLevel" -lt 80 ] && [ "$vBatteryLevel" -ge 30 ] && [ "$vChargeStatus" = "Discharging" ]; then
+                vset_charging 1
+            elif [ "$vBatteryLevel" -ge 80 ] && [ "$vChargeStatus" = "Charging" ]; then
+                vset_charging 0
+            fi
         fi
     fi
 
