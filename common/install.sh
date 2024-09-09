@@ -53,7 +53,7 @@ if [ ! -e "$VMODPATH" ]; then
     mkdir $VMODPATH
     if [ ! -e "$VLOGINT" ]; then
         cp -f "$VLOGMOD" "$VLOGINT"
-        echo "$(date) - Installed" >>$VLOGINT
+        echo "$(date) - Installed" >$VLOGINT
     fi
     if [ ! -e "$VCONFINT" ]; then
         cp -f "$VCONFMOD" "$VCONFINT"

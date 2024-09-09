@@ -6,7 +6,7 @@ vLogFile="$vModPath/autocut.log"
 vConfFile="$vModPath/autocut.conf"
 
 vlog() {
-    echo "$(date) - $1" >"$vLogFile"
+    echo "$(date) - $1" >>"$vLogFile"
 }
 
 vnotify() {
