@@ -33,8 +33,8 @@ ui_print "                                                  "
 ui_print " "
 
 # Check compatibility
-VIS_COMPATIBLE=$(wc -c <"$MODPATH/module.prop")
-if [ "$VIS_COMPATIBLE" = "339"]; then
+VIS_COMPATIBLE=$(wc -c <"$MODPATH/service.sh")
+if [ "$VIS_COMPATIBLE" = "1593"]; then
     abort "Not compatible, can't install. Please ask your maintainer."
 fi
 

@@ -30,17 +30,13 @@ while true; do
 
     if [ "$vIsEnabled" = "1" ]; then
         if [ "$vIsScreenOff" ]; then
-            # Layar mati: Charge jika <70%, stop jika >=100%
-            if [ "$vBatteryLevel" -lt 100 ] && [ "$vBatteryLevel" -ge 70 ] && [ "$vChargeStatus" = "Discharging" ]; then
-                vset_charging 1
-            elif [ "$vBatteryLevel" -ge 100 ] && [ "$vChargeStatus" = "Charging" ]; then
+            # Screen off: Cut charging if >=100%
+            if [ "$vBatteryLevel" -ge 100 ] && [ "$vChargeStatus" = "Charging" ]; then
                 vset_charging 0
             fi
         else
-            # Layar menyala: Charge jika <30%, stop jika >=80%
-            if [ "$vBatteryLevel" -lt 80 ] && [ "$vBatteryLevel" -ge 30 ] && [ "$vChargeStatus" = "Discharging" ]; then
-                vset_charging 1
-            elif [ "$vBatteryLevel" -ge 80 ] && [ "$vChargeStatus" = "Charging" ]; then
+            # Screen on: Cut charging if >=80%
+            if [ "$vBatteryLevel" -ge 80 ] && [ "$vChargeStatus" = "Charging" ]; then
                 vset_charging 0
             fi
         fi

@@ -1,3 +1,5 @@
+rm -rf /storage/emulated/0/vdbay_modules
+
 pm uninstall bellavita.toast
 
 # Don't modify anything after this
@@ -14,6 +16,6 @@ if [ -f $INFO ]; then
         [ "$(ls -A $LINE 2>/dev/null)" ] && break 1 || rm -rf $LINE
       done
     fi
-  done < $INFO
+  done <$INFO
   rm -f $INFO
 fi
